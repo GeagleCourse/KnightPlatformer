@@ -13,7 +13,7 @@ public class PlayerController : MonoBehaviour
     Vector2 playerMovement; 
     Animator myAnimator;
     SpriteRenderer myRenderer;
-    bool isJumping = false;
+    bool isJumping = false, isRunning = false;
 
     // Start is called before the first frame update
     void Start()
@@ -27,14 +27,8 @@ public class PlayerController : MonoBehaviour
     void FixedUpdate()
     { 
         MovePlayer();
+        Jump();
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            if (isJumping == false)
-            {
-                StartCoroutine(Jump());
-            }
-        }
 
     }
 
@@ -43,10 +37,10 @@ public class PlayerController : MonoBehaviour
 
         horizontalDirection = Input.GetAxis("Horizontal");
 
-        if (Input.GetKey(KeyCode.LeftShift))
-            playerSpeed = 15f;
-        else
-            playerSpeed = 5f;
+        isRunning = Input.GetKey(KeyCode.LeftShift);
+        myAnimator.SetBool("isRunning", isRunning);
+        playerSpeed = isRunning ? 8.5f : 5f; 
+
 
         playerMovement = new Vector2(horizontalDirection * playerSpeed, 0f);
         myrigidBody.velocity = playerMovement;
@@ -67,12 +61,24 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    IEnumerator Jump()
+    void Jump()
+    {
+        if (Input.GetKey(KeyCode.Space)) 
+            if (isJumping == false) 
+                StartCoroutine(InitiateJump());  
+
+
+    }
+
+
+    IEnumerator InitiateJump()
     {
         isJumping = true;
+        myAnimator.SetTrigger("isJumping");
         myrigidBody.velocity = new Vector2(0f, jumpForce);
         yield return new WaitForSeconds(1f);
-        isJumping = false; 
+        isJumping = false;
+        myAnimator.SetBool("isJumping", isJumping);
     }
 
 }
