@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Ground
+  - Fire
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -43,6 +46,9 @@ TagManager:
     locked: 0
   - name: Background
     uniqueID: 1652519997
+    locked: 0
+  - name: Platforms
+    uniqueID: 2516295489
     locked: 0
   - name: Items BG
     uniqueID: 1845232207
